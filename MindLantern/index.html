@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <title>MindLantern</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        body{
+            font-family:Arial, sans-serif;
+            margin:0;
+            background:#FDF6E3;
+            color:#3E2723;
+        }
+
+        nav{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            background:#D2B48C;
+            padding:12px 30px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.08);
+            position:sticky;
+            top:0;
+            z-index:100;
+        }
+
+        nav .logo-container{
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+
+        nav .logo-container span{
+            font-size:1.5rem;
+            font-weight:bold;
+            color:#3E2723;
+        }
+
+        nav ul{
+            display:flex;
+            list-style:none;
+            gap:18px;
+            margin:0;
+            padding:0;
+        }
+
+        nav ul li a{
+            text-decoration:none;
+            color:#FFF8EF;
+            font-weight:bold;
+        }
+
+        nav ul li a:hover{
+            opacity:0.85;
+        }
+
+        .layout{
+            display:flex;
+            justify-content:center;
+            align-items:flex-start;
+            gap:20px;
+            padding:40px 20px;
+        }
+
+        .container{
+            flex:2;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+        }
+
+        .welcome-card,
+        .stats-card,
+        .card{
+            background:rgba(255,255,255,0.75);
+            backdrop-filter:blur(6px);
+            padding:30px;
+            margin:20px auto;
+            width:90%;
+            max-width:800px;
+            border-radius:22px;
+            border:1px solid rgba(139,94,60,0.12);
+            box-shadow:0 10px 25px rgba(0,0,0,0.06);
+        }
+
+        .welcome-card h2,
+        .stats-card h2,
+        .card h1{
+            text-align:center;
+            color:#8B5E3C;
+            margin-bottom:18px;
+        }
+
+        .welcome-card p,
+        .card p{
+            line-height:1.8;
+            text-align:center;
+            color:#5C4033;
+        }
+
+        .stats-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
+            gap:18px;
+            margin-top:25px;
+        }
+
+        .stat-box{
+            background:#FFFDF9;
+            border:1px solid rgba(139,94,60,0.1);
+            border-radius:16px;
+            padding:20px;
+            text-align:center;
+            box-shadow:0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        .stat-box h3{
+            margin:0;
+            font-size:1rem;
+            color:#8B5E3C;
+        }
+
+        .stat-box p{
+            margin-top:12px;
+            font-size:1.4rem;
+            font-weight:bold;
+            color:#3E2723;
+        }
+
+        /* MUSIC */
+        .music-panel{
+            flex:1;
+            max-width:320px;
+            background:rgba(255,255,255,0.8);
+            border-radius:20px;
+            padding:20px;
+            box-shadow:0 10px 25px rgba(0,0,0,0.08);
+            position:sticky;
+            top:100px;
+            height:fit-content;
+        }
+
+        .music-panel h3{
+            text-align:center;
+            color:#8B5E3C;
+            margin-bottom:15px;
+        }
+
+        .music-panel input{
+            width:100%;
+            padding:10px;
+            border-radius:10px;
+            border:1px solid #ccc;
+            margin-bottom:10px;
+        }
+
+        .music-panel button{
+            width:100%;
+            padding:10px;
+            border:none;
+            border-radius:10px;
+            background:#8B5E3C;
+            color:white;
+            font-weight:bold;
+            cursor:pointer;
+            margin-bottom:15px;
+        }
+
+        .music-panel button:hover{
+            opacity:0.9;
+        }
+
+    </style>
+</head>
+
+<body onload="protect()">
+
+<nav>
+    <div class="logo-container">
+        <span>MindLantern</span>
+    </div>
+
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="quote.html">Quote</a></li>
+        <li><a href="write.html">Write</a></li>
+        <li><a href="history.html">History</a></li>
+        <li><a href="calendar.html">Calendar</a></li>
+        <li><a href="#" onclick="logout()">Logout</a></li>
+    </ul>
+</nav>
+
+<div class="layout">
+
+    <div class="container">
+
+        <div class="welcome-card">
+            <h2>Welcome to MindLantern</h2>
+            <p> Your personal sanctuary for thoughts and emotions.
+        Write freely, reflect deeply, and keep track of your
+        emotional journey in a calm and private space.</p>
+        </div>
+
+        <div class="card">
+
+    <div class="card">
+
+    <h1 style="font-size:1.3rem;">What You Can Do</h1>
+
+    <p style="text-align:left; line-height:1.6;">
+        MindLantern is your private reflection space where you can:
+    </p>
+
+    <ul style="text-align:left; line-height:1.8; color:#5C4033;">
+        <li>📝 Write daily journal entries</li>
+        <li>📊 Track your emotional and writing stats</li>
+        <li>📚 View and manage your past entries</li>
+        <li>🎵 Save a music link for focus or relaxation</li>
+        <li>🔒 Keep everything stored privately in your browser</li>
+    </ul>
+
+</div>
+
+</div>
+
+        <div class="stats-card">
+            <h2>Your Journaling Logs</h2>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <h3>Total Entries</h3>
+                    <p id="totalEntries">0</p>
+                </div>
+
+                <div class="stat-box">
+                    <h3>Total Words</h3>
+                    <p id="totalWords">0</p>
+                </div>
+
+                <div class="stat-box">
+                    <h3>Longest Streak</h3>
+                    <p id="longestStreak">0</p>
+                </div>
+
+                <div class="stat-box">
+                    <h3>Most Used Emoji</h3>
+                    <p id="mostEmoji">😊 (0)</p>
+                </div>
+
+                <div class="stat-box">
+                    <h3>Days Journaling</h3>
+                    <p id="daysPassed">0</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+function protect() {
+    if (!localStorage.getItem("loggedIn")) {
+        window.location.href = "signup.html";
+    }
+}
+
+function logout() {
+    localStorage.removeItem("loggedIn");
+    window.location.href = "signup.html";
+}
+</script>
+
+</body>
+</html>

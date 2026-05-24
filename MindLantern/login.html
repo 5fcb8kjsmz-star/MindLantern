@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login - MindLantern</title>
+
+    <style>
+
+        *{
+            box-sizing:border-box;
+        }
+
+        body{
+            margin:0;
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            font-family:Arial,sans-serif;
+            background:#FDF6E3;
+            color:#3E2723;
+        }
+
+        .form-box{
+            width:360px;
+            max-width:90%;
+            background:#FFF8EF;
+            padding:35px 30px;
+            border-radius:24px;
+            box-shadow:0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .logo{
+            text-align:center;
+            font-size:2rem;
+            font-weight:bold;
+            color:#8B5E3C;
+            margin-bottom:10px;
+        }
+
+        .subtitle{
+            text-align:center;
+            color:#7A5C46;
+            margin-bottom:30px;
+        }
+
+        label{
+            display:block;
+            margin-bottom:8px;
+            font-weight:bold;
+        }
+
+        input{
+            width:100%;
+            padding:12px;
+            margin-bottom:18px;
+            border-radius:12px;
+            border:1px solid #D7C2A8;
+            background:white;
+            font-size:14px;
+            outline:none;
+            color:#3E2723;
+        }
+
+        input:focus{
+            border-color:#8B5E3C;
+        }
+
+        button{
+            width:100%;
+            padding:13px;
+            border:none;
+            border-radius:12px;
+            background:#8B5E3C;
+            color:white;
+            font-size:15px;
+            font-weight:bold;
+            cursor:pointer;
+        }
+
+        button:hover{
+            opacity:0.92;
+        }
+
+        .bottom-text{
+            margin-top:18px;
+            text-align:center;
+            font-size:14px;
+        }
+
+        .bottom-text a{
+            color:#8B5E3C;
+            font-weight:bold;
+            text-decoration:none;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="form-box">
+
+    <div class="logo">
+        MindLantern
+    </div>
+
+    <div class="subtitle">
+        Welcome back
+    </div>
+
+    <label>
+        Username
+    </label>
+
+    <input
+        id="liUser"
+        type="text"
+        placeholder="Enter your username"
+    >
+
+    <label>
+        Password
+    </label>
+
+    <input
+        id="liPass"
+        type="password"
+        placeholder="Enter your password"
+    >
+
+    <button onclick="login()">
+        Login
+    </button>
+
+    <div class="bottom-text">
+        Don't have an account?
+        <a href="signup.html">
+            Sign Up
+        </a>
+    </div>
+
+</div>
+
+<script>
+
+function login(){
+
+    let username =
+        document.getElementById("liUser").value.trim();
+
+    let password =
+        document.getElementById("liPass").value.trim();
+
+    if(
+        username === localStorage.getItem("user")
+        &&
+        password === localStorage.getItem("pass")
+    ){
+
+        localStorage.setItem("loggedIn","true");
+
+        window.location.href = "index.html";
+
+    }else{
+
+        alert("Incorrect username or password.");
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>

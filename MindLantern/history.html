@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>History - MindLantern</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        body{
+            font-family:Arial, sans-serif;
+            margin:0;
+            background:#FDF6E3;
+            color:#3E2723;
+        }
+
+        nav{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            background:#D2B48C;
+            padding:14px 30px;
+            position:sticky;
+            top:0;
+            z-index:100;
+            box-shadow:0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        nav .logo-container span{
+            font-size:1.5rem;
+            font-weight:bold;
+            color:#3E2723;
+        }
+
+        nav ul{
+            display:flex;
+            gap:18px;
+            list-style:none;
+            margin:0;
+            padding:0;
+        }
+
+        nav ul li a{
+            text-decoration:none;
+            color:#FDF6E3;
+            font-weight:bold;
+        }
+
+        /* ---------------- LAYOUT FIX ---------------- */
+
+        .layout{
+            display:flex;
+            justify-content:center;
+            align-items:flex-start;
+            gap:20px;
+            padding:40px 20px;
+        }
+
+        .main{
+            flex:2;
+        }
+
+        /* ---------------- MUSIC PANEL ---------------- */
+
+        .music-panel{
+            flex:1;
+            max-width:320px;
+            background:rgba(255,255,255,0.85);
+            border-radius:20px;
+            padding:20px;
+            box-shadow:0 10px 25px rgba(0,0,0,0.08);
+            position:sticky;
+            top:100px;
+            height:fit-content;
+        }
+
+        .music-panel h3{
+            text-align:center;
+            color:#8B5E3C;
+        }
+
+        .music-panel input{
+            width:100%;
+            padding:10px;
+            border-radius:10px;
+            border:1px solid #ccc;
+            margin-bottom:10px;
+        }
+
+        .music-panel button{
+            width:100%;
+            padding:10px;
+            border:none;
+            border-radius:10px;
+            background:#8B5E3C;
+            color:white;
+            font-weight:bold;
+            cursor:pointer;
+            margin-bottom:10px;
+        }
+
+        .music-panel iframe{
+            width:100%;
+            border-radius:12px;
+        }
+
+        /* ---------------- CONTENT ---------------- */
+
+        .container{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+        }
+
+        h1{
+            color:#8B5E3C;
+            margin-bottom:25px;
+        }
+
+        #historyContainer{
+            width:100%;
+            max-width:1000px;
+            display:grid;
+            grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+            gap:20px;
+        }
+
+        .entry{
+            position:relative;
+            padding:20px;
+            border-radius:18px;
+            box-shadow:0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        .deleteBtn{
+            position:absolute;
+            top:12px;
+            right:12px;
+            width:30px;
+            height:30px;
+            border:none;
+            border-radius:50%;
+            background:#8B5E3C;
+            color:white;
+            cursor:pointer;
+        }
+
+        .empty{
+            text-align:center;
+            color:#6b4f3b;
+            margin-top:30px;
+        }
+
+    </style>
+</head>
+
+<body onload="protect(); loadEntries(); loadMusic();">
+
+<nav>
+    <div class="logo-container">
+        <span>MindLantern</span>
+    </div>
+
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="quote.html">Quote</a></li>
+        <li><a href="write.html">Write</a></li>
+        <li><a href="history.html">History</a></li>
+        <li><a href="calendar.html">Calendar</a></li>
+        <li><a href="#" onclick="logout()">Logout</a></li>
+    </ul>
+</nav>
+
+<!-- ✔ MAIN LAYOUT -->
+<div class="layout">
+
+    <!-- LEFT SIDE -->
+    <div class="main">
+
+        <div class="container">
+
+            <h1>Your Journal History</h1>
+
+            <div id="historyContainer"></div>
+
+        </div>
+
+    </div>
+
+    <!-- RIGHT SIDE MUSIC -->
+    <div class="music-panel">
+
+        <h3>🎵 Music</h3>
+
+        <input id="musicUrl" placeholder="YouTube or Spotify link">
+
+        <button onclick="setMusic()">Save</button>
+
+        <div id="musicBox"></div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* ---------------- MUSIC ---------------- */
+
+function setMusic(){
+
+    let url = document.getElementById("musicUrl").value.trim();
+    if(!url) return;
+
+    // YouTube
+    if(url.includes("youtube.com/watch")){
+        const id = url.split("v=")[1];
+        url = "https://www.youtube.com/embed/" + id;
+    }
+
+    // Spotify
+    if(url.includes("open.spotify.com/track/")){
+        url = url.replace(
+            "open.spotify.com/track/",
+            "open.spotify.com/embed/track/"
+        );
+    }
+
+    localStorage.setItem("musicUrl", url);
+    loadMusic();
+}
+
+function loadMusic(){
+
+    const url = localStorage.getItem("musicUrl");
+    const box = document.getElementById("musicBox");
+
+    if(!url){
+        box.innerHTML = "";
+        return;
+    }
+
+    box.innerHTML = `
+        <iframe
+            src="${url}"
+            height="152"
+            frameborder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+        </iframe>
+    `;
+}
+
+/* ---------------- LOAD MUSIC ON START ---------------- */
+loadMusic();
+
+/* ---------------- YOUR EXISTING LOGIC (UNCHANGED IDEA) ---------------- */
+
+function protect(){
+    if(localStorage.getItem("loggedIn") !== "true"){
+        window.location.href = "login.html";
+    }
+}
+
+function loadEntries(){
+
+    const container = document.getElementById("historyContainer");
+
+    let entries = JSON.parse(localStorage.getItem("diaryEntries") || "[]");
+
+    container.innerHTML = "";
+
+    entries.reverse();
+
+    if(entries.length === 0){
+        container.innerHTML = `<div class="empty">No entries yet</div>`;
+        return;
+    }
+
+    entries.forEach((entry,i)=>{
+
+        const div = document.createElement("div");
+        div.className = "entry";
+        div.style.background = entry.bgColor || "#fff";
+
+        div.innerHTML = `
+            <button class="deleteBtn" onclick="deleteEntry(${i})">×</button>
+            <div>${entry.emoji || ""}</div>
+            <div>${entry.date}</div>
+            <div>${entry.content}</div>
+        `;
+
+        container.appendChild(div);
+    });
+}
+
+function deleteEntry(index){
+
+    let entries = JSON.parse(localStorage.getItem("diaryEntries") || "[]");
+    entries.splice(index,1);
+    localStorage.setItem("diaryEntries", JSON.stringify(entries));
+    loadEntries();
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up - MindLantern</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #FDF6E3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #3E2723;
+        }
+
+        .form-box {
+            width: 360px;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(139, 94, 60, 0.2);
+            border-radius: 20px;
+            padding: 35px 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            backdrop-filter: blur(6px);
+        }
+
+        .form-box h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #8B5E3C;
+            font-size: 1.6rem;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+            color: #5C4033;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #8B5E3C;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin: 10px 0 20px;
+            color: #8B5E3C;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            background: #8B5E3C;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="form-box">
+    <h2>MindLantern Sign Up</h2>
+
+    <label>Username</label>
+    <input id="suUser" type="text" placeholder="Enter username">
+
+    <label>Password</label>
+    <input id="suPass" type="password" placeholder="Enter password">
+
+    <a href="login.html">Already have an account? Login</a>
+
+    <button onclick="signup()">Create Account</button>
+</div>
+
+<script>
+function signup() {
+    const username = document.getElementById("suUser").value.trim();
+    const password = document.getElementById("suPass").value.trim();
+
+    if (!username || !password) {
+        alert("Please fill in both fields.");
+        return;
+    }
+
+    localStorage.setItem("user", username);
+    localStorage.setItem("pass", password);
+    localStorage.setItem("loggedIn", "true");
+
+    alert("Account created successfully!");
+    window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>

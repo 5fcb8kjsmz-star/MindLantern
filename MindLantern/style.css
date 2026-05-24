@@ -1,0 +1,149 @@
+/* ===================== RESET ===================== */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family: Arial, sans-serif;
+    background:#FDF6E3;
+    color:#3E2723;
+}
+
+/* ===================== NAVBAR ===================== */
+nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#D2B48C;
+    padding:14px 30px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+/* logo */
+nav .logo-container{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+nav .logo-container span{
+    font-size:1.5rem;
+    font-weight:bold;
+    color:#3E2723;
+}
+
+/* LINKS (FIXED VISIBILITY) */
+nav ul{
+    display:flex;
+    list-style:none;
+    gap:18px;
+}
+
+nav ul li a{
+    text-decoration:none;
+    color:#3E2723 !important;   /* FIX: always visible */
+    font-weight:bold;
+    opacity:1;
+    transition:0.2s;
+}
+
+nav ul li a:hover{
+    opacity:0.7;
+}
+
+/* ===================== CONTAINER ===================== */
+.container{
+    width:100%;
+    padding:40px 20px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+/* ===================== CARD ===================== */
+.card{
+    background:#FFF8EF;
+    width:75%;
+    max-width:850px;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* ===================== BUTTONS ===================== */
+button{
+    cursor:pointer;
+    border:none;
+    transition:0.2s;
+}
+
+button:hover{
+    transform:scale(1.03);
+}
+
+/* ===================== LOGIN / SIGNUP ===================== */
+body.login-page,
+body.signup-page{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#FDF6E3; /* FIX: same theme */
+    overflow:hidden;
+}
+
+.form-box{
+    width:350px;
+    max-width:90%;
+    padding:35px 25px;
+    border-radius:20px;
+    background:#FFF8EF;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    display:flex;
+    flex-direction:column;
+}
+
+.form-box h2{
+    color:#8B5E3C;
+    margin-bottom:20px;
+    text-align:center;
+}
+
+.form-box label{
+    color:#3E2723;
+    margin-bottom:5px;
+    font-size:14px;
+}
+
+.form-box input{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #D7C2A8;
+    background:white;
+    color:#3E2723;
+    margin-bottom:15px;
+}
+
+.form-box input::placeholder{
+    color:#7A5C46;
+}
+
+.form-box a{
+    color:#8B5E3C;
+    margin-bottom:15px;
+    font-size:13px;
+}
+
+.form-box button{
+    padding:12px;
+    border-radius:12px;
+    background:#8B5E3C;
+    color:#fff;
+    font-weight:bold;
+}

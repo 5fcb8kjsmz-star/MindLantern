@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calendar - MindLantern</title>
+
+    <style>
+        body{
+            font-family:Arial,sans-serif;
+            margin:0;
+            background:#FDF6E3;
+            color:#3E2723;
+        }
+
+        nav{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            background:#D2B48C;
+            padding:14px 30px;
+            position:sticky;
+            top:0;
+            z-index:100;
+        }
+
+        nav ul{
+            display:flex;
+            gap:18px;
+            list-style:none;
+            margin:0;
+            padding:0;
+        }
+
+        nav ul li a{
+            text-decoration:none;
+            color:#FDF6E3;
+            font-weight:bold;
+        }
+
+        /* HEADER */
+        .header{
+            text-align:center;
+            padding:20px;
+        }
+
+        .month-nav{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:20px;
+            margin-top:10px;
+        }
+
+        .month-nav button{
+            padding:8px 14px;
+            border:none;
+            background:#8B5E3C;
+            color:white;
+            border-radius:8px;
+            cursor:pointer;
+        }
+
+        /* CALENDAR */
+        .calendar{
+            max-width:900px;
+            margin:0 auto;
+            padding:20px;
+        }
+
+        .weekdays{
+            display:grid;
+            grid-template-columns:repeat(7,1fr);
+            text-align:center;
+            font-weight:bold;
+            margin-bottom:10px;
+        }
+
+        .grid{
+            display:grid;
+            grid-template-columns:repeat(7,1fr);
+            gap:8px;
+        }
+
+        .day{
+            min-height:100px;
+            background:rgba(255,255,255,0.7);
+            border-radius:12px;
+            padding:6px;
+        }
+
+        .today{
+            border:2px solid #8B5E3C;
+        }
+
+        .emoji{
+            display:block;
+            margin-top:8px;
+            background:white;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+        }
+
+        /* MODAL */
+        .modal{
+            display:none;
+            position:fixed;
+            top:0;left:0;
+            width:100%;
+            height:100%;
+            background:rgba(0,0,0,0.5);
+            justify-content:center;
+            align-items:center;
+        }
+
+        .modal-box{
+            background:white;
+            padding:20px;
+            border-radius:12px;
+            width:300px;
+        }
+    </style>
+</head>
+
+<body onload="protect(); init();">
+
+<nav>
+    <div class="logo-container">
+        <span>MindLantern</span>
+    </div>
+
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="quote.html">Quote</a></li>
+        <li><a href="write.html">Write</a></li>
+        <li><a href="history.html">History</a></li>
+        <li><a href="calendar.html">Calendar</a></li>
+        <li><a href="#" onclick="logout()">Logout</a></li>
+    </ul>
+</nav>
+
+<div class="header">
+
+    <h2 id="monthTitle"></h2>
+
+    <div class="month-nav">
+        <button onclick="changeMonth(-1)">◀ Prev</button>
+        <button onclick="changeMonth(1)">Next ▶</button>
+    </div>
+
+</div>
+
+<div class="calendar">
+
+    <div class="weekdays">
+        <div>Sun</div><div>Mon</div><div>Tue</div>
+        <div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal" onclick="closeModal()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <h3 id="mEmoji"></h3>
+        <p id="mDate"></p>
+        <div id="mContent"></div>
+    </div>
+</div>
+
+<script>
+
+/* AUTH */
+function protect(){
+    if(localStorage.getItem("loggedIn") !== "true"){
+        window.location.href="login.html";
+    }
+}
+
+function logout(){
+    localStorage.removeItem("loggedIn");
+    window.location.href="login.html";
+}
+
+/* DATA */
+function getEntries(){
+    return JSON.parse(localStorage.getItem("diaryEntries") || "[]");
+}
+
+/* DATE */
+function key(date){
+    return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+}
+
+/* MONTH */
+let current = new Date();
+
+/* INIT */
+function init(){
+    render();
+}
+
+/* NAV */
+function changeMonth(n){
+    current.setMonth(current.getMonth()+n);
+    render();
+}
+
+/* RENDER */
+function render(){
+
+    const grid = document.getElementById("grid");
+    const title = document.getElementById("monthTitle");
+
+    const year = current.getFullYear();
+    const month = current.getMonth();
+
+    const monthName = current.toLocaleString("default",{month:"long"});
+
+    title.innerText = monthName + " " + year;
+
+    grid.innerHTML = "";
+
+    const entries = getEntries();
+
+    let map = {};
+
+    entries.forEach(e=>{
+        let d = new Date(e.date);
+        let k = key(d);
+        if(!map[k]) map[k]=[];
+        map[k].push(e);
+    });
+
+    const first = new Date(year,month,1).getDay();
+    const days = new Date(year,month+1,0).getDate();
+
+    for(let i=0;i<first;i++){
+        grid.appendChild(document.createElement("div"));
+    }
+
+    for(let d=1; d<=days; d++){
+
+        const date = new Date(year,month,d);
+        const k = key(date);
+
+        const div = document.createElement("div");
+        div.className="day";
+
+        if(k === key(new Date())){
+            div.classList.add("today");
+        }
+
+        div.innerHTML = `<div>${d}</div>`;
+
+        if(map[k]){
+            map[k].forEach(entry=>{
+                const b = document.createElement("button");
+                b.className="emoji";
+                b.innerText = entry.emoji || "📝";
+
+                b.onclick = () => open(entry);
+
+                div.appendChild(b);
+            });
+        }
+
+        grid.appendChild(div);
+    }
+}
+
+/* MODAL */
+function open(entry){
+    document.getElementById("modal").style.display="flex";
+    document.getElementById("mEmoji").innerText = entry.emoji || "📝";
+    document.getElementById("mDate").innerText = entry.date;
+    document.getElementById("mContent").innerHTML = entry.content;
+}
+
+function closeModal(){
+    document.getElementById("modal").style.display="none";
+}
+
+
+</script>
+
+
+
+</body>
+</html>
